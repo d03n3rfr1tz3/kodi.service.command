@@ -33,9 +33,9 @@ class Screensaver(xbmcgui.WindowXMLDialog):
                 mode=0o777
             )
             with open(file_descriptor, 'w') as fh:
-                fh.write('#!/bin/bash')
+                fh.write('#!/bin/sh')
 
-        subprocess.call(file_path, shell=True)
+        subprocess.run(['/bin/sh', file_path])
         self.monitor = self.ExitMonitor(self.exit)
 
     def exit(self):
@@ -50,9 +50,9 @@ class Screensaver(xbmcgui.WindowXMLDialog):
                 mode=0o777
             )
             with open(file_descriptor, 'w') as fh:
-                fh.write('#!/bin/bash')
+                fh.write('#!/bin/sh')
 
-        subprocess.call(file_path, shell=True)
+        subprocess.run(['/bin/sh', file_path])
         self.close()
 
 
