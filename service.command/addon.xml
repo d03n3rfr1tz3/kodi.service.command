@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="service.command" name="Command Service" version="1.0.0" provider-name="d03n3rfr1tz3">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+  </requires>
+  <extension point="xbmc.service" library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en">Service for Commands on idle/wake or other Events</summary>
+    <summary lang="de">Dienst für Kommandos bei idle/wake oder anderen Events</summary>
+    <description lang="en">This is a Service, with which you can activate commands on idle/wake or other Events.</description>
+    <description lang="de">Dies ist ein Dienst, mit welchem du Kommandos bei idle/wake oder anderen Events aktivieren kannst.</description>
+    <website>www.d03n3r.de</website>
+    <email>kodi@d03n3r.de</email>
+    <assets>
+        <icon>icon.png</icon>
+    </assets>
+    <source>https://github.com/d03n3rfr1tz3/kodi.service.command</source>
+  </extension>
+</addon>
