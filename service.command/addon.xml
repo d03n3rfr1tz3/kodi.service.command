@@ -10,7 +10,7 @@
     <summary lang="de">Dienst für Kommandos bei idle/wake oder anderen Events</summary>
     <description lang="en">This is a Service, with which you can activate commands on idle/wake or other Events.</description>
     <description lang="de">Dies ist ein Dienst, mit welchem du Kommandos bei idle/wake oder anderen Events aktivieren kannst.</description>
-    <website>www.d03n3r.de</website>
+    <website>https://www.d03n3r.de/Project.html</website>
     <email>kodi@d03n3r.de</email>
     <assets>
         <icon>icon.png</icon>
