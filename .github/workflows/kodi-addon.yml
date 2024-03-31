@@ -11,5 +11,5 @@ jobs:
       id: kodi-addon-checker
       uses: xbmc/action-kodi-addon-checker@v1.1
       with:
-        kodi-version: nexus
+        kodi-version: matrix
         addon-id: service.command
