@@ -1,5 +1,6 @@
 import os
 import subprocess
+import stat
 import sys
 import xbmc
 import xbmcaddon
@@ -35,8 +36,28 @@ class EventCommands():
 
         def onScreensaverActivated(self):
             self.onEvent(sys._getframe().f_code.co_name)
-        
+
         def onScreensaverDeactivated(self):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+    class EventPlayer(xbmc.Player):
+    
+        def __init__(self, onEvent):
+            self.onEvent = onEvent
+
+        def onPlayBackStarted(self):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onPlayBackStopped(self):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onPlayBackEnded(self):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onPlayBackPaused(self):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onPlayBackResumed(self):
             self.onEvent(sys._getframe().f_code.co_name)
 
     def onInit(self):
@@ -44,6 +65,7 @@ class EventCommands():
         self.preparePath(folder_path)
 
         monitor = self.EventMonitor(self.onEvent)
+        player = self.EventPlayer(self.onEvent)
         while not monitor.abortRequested():
             if monitor.waitForAbort(10):
                 break
@@ -63,15 +85,15 @@ class EventCommands():
 
     def prepareFile(self, file_path):
         if not os.path.exists(file_path):
-            file_descriptor = os.open(
-                path=file_path,
-                flags=(os.O_WRONLY | os.O_CREAT | os.O_TRUNC),
-                mode=0o777
-            )
-            with open(file_descriptor, 'w') as fh:
+            xbmc.log("Script '{0}' will be prepared now.".format(file_path))
+            with open(file_path, 'w') as fh:
                 fh.write('#!/bin/sh')
 
+            st = os.stat(file_path)
+            os.chmod(file_path, st.st_mode | stat.S_IEXEC)
+
     def executeCommand(self, command_path):
+        xbmc.log("Script '{0}' will be executed now.".format(command_path))
         subprocess.run(['/bin/sh', command_path])
 
 if __name__ == '__main__':
