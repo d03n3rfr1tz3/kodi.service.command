@@ -10,28 +10,30 @@ addon = xbmcaddon.Addon('service.command')
 addon_data = addon.getAddonInfo('profile')
 
 class EventCommands():
+    aborted = False
+    idled = xbmc.getGlobalIdleTime()
 
     class EventMonitor(xbmc.Monitor):
     
         def __init__(self, onEvent):
             self.onEvent = onEvent
 
-        def onCleanStarted(self):
+        def onScanStarted(self, library):
             self.onEvent(sys._getframe().f_code.co_name)
 
-        def onCleanFinished(self):
+        def onScanFinished(self, library):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onCleanStarted(self, library):
+            self.onEvent(sys._getframe().f_code.co_name)
+
+        def onCleanFinished(self, library):
             self.onEvent(sys._getframe().f_code.co_name)
 
         def onDPMSActivated(self):
             self.onEvent(sys._getframe().f_code.co_name)
 
         def onDMPSDeactivated(self):
-            self.onEvent(sys._getframe().f_code.co_name)
-
-        def onScanStarted(self):
-            self.onEvent(sys._getframe().f_code.co_name)
-
-        def onScanFinished(self):
             self.onEvent(sys._getframe().f_code.co_name)
 
         def onScreensaverActivated(self):
@@ -67,10 +69,23 @@ class EventCommands():
         monitor = self.EventMonitor(self.onEvent)
         player = self.EventPlayer(self.onEvent)
         while not monitor.abortRequested():
-            if monitor.waitForAbort(10):
+
+            if monitor.waitForAbort(1):
+                self.aborted = True
                 break
 
+            oldIdled = self.idled
+            newIdled = xbmc.getGlobalIdleTime()
+            self.idled = newIdled
+
+            if newIdled >= 10 and oldIdled < 10:
+                self.onEvent("onIdleStart")
+            if oldIdled >= 10 and newIdled < oldIdled:
+                self.onEvent("onIdleEnd")
+
     def onEvent(self, eventName):
+        if self.aborted: return
+
         folder_path = xbmcvfs.translatePath(addon_data)
         self.preparePath(folder_path)
 
